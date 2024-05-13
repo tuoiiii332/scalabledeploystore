@@ -1,12 +1,20 @@
-const gnomeSort = (arr) => {
-  let index = 0;
-  while (index < arr.length) {
-    if (index === 0 || arr[index] >= arr[index - 1]) {
-      index++;
-    } else {
-      [arr[index], arr[index - 1]] = [arr[index - 1], arr[index]];
-      index--;
-    }
+function findItinerary(tickets) {
+  const graph = new Map();
+  for (const [from, to] of tickets) {
+    if (!graph.has(from)) graph.set(from, []);
+    graph.get(from).push(to);
   }
-  return arr;
-};
+  for (const destinations of graph.values()) {
+    destinations.sort();
+  }
+  const result = [];
+  dfs("JFK");
+  return result.reverse();
+  function dfs(from) {
+    const destinations = graph.get(from);
+    while (destinations && destinations.length) {
+      dfs(destinations.shift());
+    }
+    result.push(from);
+  }
+}
